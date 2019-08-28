@@ -301,6 +301,157 @@ object DateUtils {
         }
     }
 
+    /**
+     * 格式化差值
+     * @return 四位数组 array{天，时，分，秒}
+     */
+    fun formatDateDifference(timestamp: Long): Array<Long> {
+        val day = timestamp / DateUtils.DAY
+        val hour = (timestamp - DateUtils.DAY * day) / DateUtils.HOURS
+        val minute = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hour) / DateUtils.MINUTE
+        val second =
+            (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hour - DateUtils.MINUTE * minute) / DateUtils.SECOND
+        return arrayOf(day, hour, minute, second)
+    }
+
+    /**
+     * 多少天后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeDayToDate(date: Date, dayCount: Int): Date {
+        val calendar = getCalendar(date)
+        calendar.add(Calendar.DAY_OF_YEAR, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少天后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeDayToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeDayToDate(date, dayCount))
+
+    /**
+     * 多少天后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeDayToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeDayToDate(date, dayCount))
+
+    /**
+     * 多少天后-当时系统时间
+     * @param dayCount 天数
+     */
+    fun beforeDayToDate(dayCount: Int): Date {
+        val calendar = getCalendar()
+        calendar.add(Calendar.DAY_OF_YEAR, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少天后
+     * @param dayCount 天数
+     */
+    fun beforeDayToStr(dayCount: Int) = DateUtils.toStr(beforeDayToDate(dayCount))
+
+    /**
+     * 多少天后
+     * @param dayCount 天数
+     */
+    fun beforeDayToLong(dayCount: Int) = DateUtils.toLong(beforeDayToDate(dayCount))
+
+
+    /**
+     * 多少月后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeMonthToDate(date: Date, dayCount: Int): Date {
+        val calendar = getCalendar(date)
+        calendar.add(Calendar.MONTH, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少月后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeMonthToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeMonthToDate(date, dayCount))
+
+    /**
+     * 多少月后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeMonthToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeMonthToDate(date, dayCount))
+
+    /**
+     * 多少月后-当时系统时间
+     * @param dayCount 天数
+     */
+    fun beforeMonthToDate(dayCount: Int): Date {
+        val calendar = getCalendar()
+        calendar.add(Calendar.MONTH, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少月后
+     * @param dayCount 天数
+     */
+    fun beforeMonthToStr(dayCount: Int) = DateUtils.toStr(beforeMonthToDate(dayCount))
+
+    /**
+     * 多少月后
+     * @param dayCount 天数
+     */
+    fun beforeMonthToLong(dayCount: Int) = DateUtils.toLong(beforeMonthToDate(dayCount))
+
+
+    /**
+     * 多少年后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeYearToDate(date: Date, dayCount: Int): Date {
+        val calendar = getCalendar(date)
+        calendar.add(Calendar.YEAR, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少年后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeYearToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeYearToDate(date, dayCount))
+
+    /**
+     * 多少年后
+     * @param date 在这个时间基础上
+     * @param dayCount 天数
+     */
+    fun beforeYearToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeYearToDate(date, dayCount))
+
+    /**
+     * 多少年后-当时系统时间
+     * @param dayCount 天数
+     */
+    fun beforeYearToDate(dayCount: Int): Date {
+        val calendar = getCalendar()
+        calendar.add(Calendar.YEAR, dayCount)
+        return calendar.time
+    }
+
+    /**
+     * 多少年后
+     * @param dayCount 天数
+     */
+    fun beforeYearToStr(dayCount: Int) = DateUtils.toStr(beforeYearToDate(dayCount))
+
+
     fun timeInMillis() = getCalendar().timeInMillis
     fun year() = getCalendar().get(Calendar.YEAR)
     fun month() = getCalendar().get(Calendar.MONTH) + 1
