@@ -53,13 +53,13 @@ object DateUtils {
         return result
     }
 
-    fun formatToStr(timestamp: Long): String = formatToStr(timestamp, YMDHMS)
+    fun toStr(timestamp: Long): String = toStr(timestamp, YMDHMS)
 
-    fun formatToStr(timestamp: Long, patter: String): String = getDateFormat(patter).format(timestamp * getTimestampLength(timestamp))
+    fun toStr(timestamp: Long, patter: String): String = getDateFormat(patter).format(timestamp * getTimestampLength(timestamp))
 
-    fun formatToStr(date: Date): String = formatToStr(date, YMDHMS)
+    fun toStr(date: Date): String = toStr(date, YMDHMS)
 
-    fun formatToStr(date: Date, patter: String): String = getDateFormat(patter).format(date)
+    fun toStr(date: Date, patter: String): String = getDateFormat(patter).format(date)
 
     /**
      * 默认为24小时制
@@ -67,17 +67,17 @@ object DateUtils {
      * @param l
      * @return
      */
-    fun formatToDate(l: Long): Date = formatToDate(l, YMDHMS)
+    fun toDate(l: Long): Date = toDate(l, YMDHMS)
 
-    fun formatToDate(l: Long, patter: String): Date = try {
-        getDateFormat(patter).parse(formatToStr(l, patter))
+    fun toDate(l: Long, patter: String): Date = try {
+        getDateFormat(patter).parse(toStr(l, patter))
     } catch (e: ParseException) {
         Date()
     }
 
-    fun formatToDate(dateStr: String): Date = formatToDate(dateStr, YMDHMS)
+    fun toDate(dateStr: String): Date = toDate(dateStr, YMDHMS)
 
-    fun formatToDate(dateStr: String, patter: String): Date = try {
+    fun toDate(dateStr: String, patter: String): Date = try {
         getDateFormat(patter).parse(dateStr)
     } catch (e: ParseException) {
         Date()
@@ -89,14 +89,14 @@ object DateUtils {
      * @param date
      * @return
      */
-    fun formatToLong(date: Date): Long = date.time
+    fun toLong(date: Date): Long = date.time
 
-    fun formatToLong(dateStr: String): Long = formatToLong(dateStr, YMDHMS)
+    fun toLong(dateStr: String): Long = toLong(dateStr, YMDHMS)
 
-    fun formatToLong(dateStr: String, patter: String): Long = try {
+    fun toLong(dateStr: String, patter: String): Long = try {
         getDateFormat(patter).parse(dateStr).time
     } catch (e: ParseException) {
-        getCurrentTimeInMillis()
+        timeInMillis()
     }
 
     /**
@@ -115,7 +115,7 @@ object DateUtils {
      * @param timestamp1
      * @param timestamp2
      */
-    fun before(timestamp1: String, timestamp2: String, patter: String): Boolean = formatToDate(timestamp1, patter).before(formatToDate(timestamp2, patter))
+    fun before(timestamp1: String, timestamp2: String, patter: String): Boolean = toDate(timestamp1, patter).before(toDate(timestamp2, patter))
 
     /**
      * timestamp1 在 timestamp2 之前
@@ -140,7 +140,7 @@ object DateUtils {
      * @param timestamp1
      * @param timestamp2
      */
-    fun after(timestamp1: String, timestamp2: String, patter: String): Boolean = formatToDate(timestamp1, patter).after(formatToDate(timestamp2, patter))
+    fun after(timestamp1: String, timestamp2: String, patter: String): Boolean = toDate(timestamp1, patter).after(toDate(timestamp2, patter))
 
     /**
      * timestamp1 在 timestamp2 之后
@@ -179,7 +179,7 @@ object DateUtils {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
                     .asSequence()
-                    .filter { formatToDate(timestamps[it], patter).before(formatToDate(timestamps[it], patter)) }
+                    .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
                     .forEach { temp = timestamps[it] }
         }
         return temp
@@ -227,7 +227,7 @@ object DateUtils {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
                     .asSequence()
-                    .filter { formatToDate(timestamps[it], patter).before(formatToDate(timestamps[it], patter)) }
+                    .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
                     .forEach { temp = timestamps[it] }
         }
         return temp
@@ -301,19 +301,19 @@ object DateUtils {
         }
     }
 
-    fun getCurrentTimeInMillis() = getCalendar().timeInMillis
-    fun getCurrentYear() = getCalendar().get(Calendar.YEAR)
-    fun getCurrentMonth() = getCalendar().get(Calendar.MONTH) + 1
-    fun getCurrentDay() = getCalendar().get(Calendar.DAY_OF_MONTH)
-    fun getCurrentHour() = getCalendar().get(Calendar.HOUR_OF_DAY)
-    fun getCurrentMinute() = getCalendar().get(Calendar.MINUTE)
-    fun getCurrentSecond() = getCalendar().get(Calendar.SECOND)
+    fun timeInMillis() = getCalendar().timeInMillis
+    fun year() = getCalendar().get(Calendar.YEAR)
+    fun month() = getCalendar().get(Calendar.MONTH) + 1
+    fun day() = getCalendar().get(Calendar.DAY_OF_MONTH)
+    fun hour() = getCalendar().get(Calendar.HOUR_OF_DAY)
+    fun minute() = getCalendar().get(Calendar.MINUTE)
+    fun second() = getCalendar().get(Calendar.SECOND)
 
-    fun getTimeInMillis(date: Date) = date.time
-    fun getYear(date: Date) = getCalendar(date).get(Calendar.YEAR)
-    fun getMonth(date: Date) = getCalendar(date).get(Calendar.MONTH) + 1
-    fun getDay(date: Date) = getCalendar(date).get(Calendar.DAY_OF_MONTH)
-    fun getHour(date: Date) = getCalendar(date).get(Calendar.HOUR_OF_DAY)
-    fun getMinute(date: Date) = getCalendar(date).get(Calendar.MINUTE)
-    fun getSecond(date: Date) = getCalendar(date).get(Calendar.SECOND)
+    fun timeInMillis(date: Date) = date.time
+    fun year(date: Date) = getCalendar(date).get(Calendar.YEAR)
+    fun month(date: Date) = getCalendar(date).get(Calendar.MONTH) + 1
+    fun day(date: Date) = getCalendar(date).get(Calendar.DAY_OF_MONTH)
+    fun hour(date: Date) = getCalendar(date).get(Calendar.HOUR_OF_DAY)
+    fun minute(date: Date) = getCalendar(date).get(Calendar.MINUTE)
+    fun second(date: Date) = getCalendar(date).get(Calendar.SECOND)
 }
