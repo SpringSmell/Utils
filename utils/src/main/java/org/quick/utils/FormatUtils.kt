@@ -14,17 +14,17 @@ import java.util.regex.Pattern
  */
 object FormatUtils {
 
-    fun formatDip2Px(context: Context,dpValue: Float): Float = dpValue * context.applicationContext.resources.displayMetrics.density + 0.5f
+    fun dip2px(context: Context, dpValue: Float): Float = dpValue * context.applicationContext.resources.displayMetrics.density + 0.5f
 
 
-    fun formatPx2Dip(context: Context,pxValue: Float): Float = pxValue / context.applicationContext.resources.displayMetrics.density + 0.5F
+    fun px2dip(context: Context, pxValue: Float): Float = pxValue / context.applicationContext.resources.displayMetrics.density + 0.5F
 
-    fun formatDouble(value: Double, rules: String): String {
+    fun double(value: Double, rules: String): String {
         val df = DecimalFormat(rules)
         return df.format(value)
     }
 
-    fun formatDouble(value: Double): String = DecimalFormat("#,###.00").format(value)
+    fun double(value: Double): String = DecimalFormat("#,###.00").format(value)
 
     /**
      * 修剪浮点类型
@@ -33,12 +33,12 @@ object FormatUtils {
      * @param rules 规则(如:0.00保留2位小数)
      * @return string or "" or value
      */
-    fun formatDouble(value: String?, rules: String?): String {
+    fun double(value: String?, rules: String?): String {
         if (value == null || value.isEmpty() || rules == null || rules.isEmpty()) {
             return ""
         }
         return try {
-            formatDouble(java.lang.Double.parseDouble(value), rules)
+            double(java.lang.Double.parseDouble(value), rules)
         } catch (e: Exception) {
             value
         }
@@ -53,21 +53,21 @@ object FormatUtils {
      * @return
      * @formula |AB| = sqrt((X1-X2)^2 + (Y1-Y2)^2)
      */
-    fun getFormatDistance(x1: Point, x2: Point): Double = getFormatDistance(x1.x.toFloat(), x2.x.toFloat(), x1.y.toFloat(), x2.y.toFloat())
+    fun distance(x1: Point, x2: Point): Double = distance(x1.x.toFloat(), x2.x.toFloat(), x1.y.toFloat(), x2.y.toFloat())
 
 
-    fun getFormatDistance(x1: Float, x2: Float, y1: Float, y2: Float): Double {
+    fun distance(x1: Float, x2: Float, y1: Float, y2: Float): Double {
         val x = Math.abs(x2 - x1)
         val y = Math.abs(y2 - y1)
         return Math.sqrt((x * x + y * y).toDouble())
     }
 
-    fun formatNumberWithMarkSplit(number: Double): String {
-        return formatNumberWithMarkSplit(number, ",", 3, 2)
+    fun numberSplit(number: Double): String {
+        return numberSplit(number, ",", 3, 2)
     }
 
-    fun formatNumberWithMarkSplit(number: Double, endLength: Int): String {
-        return formatNumberWithMarkSplit(number, ",", 3, endLength)
+    fun numberSplit(number: Double, endLength: Int): String {
+        return numberSplit(number, ",", 3, endLength)
     }
 
     /**
@@ -79,7 +79,7 @@ object FormatUtils {
      * @param splitLength 分割位数
      * @return 格式化完成的字符串
      */
-    fun formatNumberWithMarkSplit(number: Double, splitChar: String, splitLength: Int, endLength: Int): String {
+    fun numberSplit(number: Double, splitChar: String, splitLength: Int, endLength: Int): String {
 
         var tempPattern: String
         var tempSplitStr = ""
@@ -99,7 +99,7 @@ object FormatUtils {
      * @param mobileNumber 12345678910 to 123 4567 8910
      * @return
      */
-    fun formatMobileSpace(mobileNumber: String): String? {
+    fun mobileSpace(mobileNumber: String): String? {
         return if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length < 11) {
             mobileNumber
         } else mobileNumber.substring(0, 3) + " " + mobileNumber.substring(3, 11 - 4) + " " + mobileNumber.substring(11 - 4, mobileNumber.length)
@@ -111,7 +111,7 @@ object FormatUtils {
      * @param mobileNumber 12345678910 to 123****8910
      * @return
      */
-    fun formatMobileStar(mobileNumber: String): String? {
+    fun mobileStar(mobileNumber: String): String? {
         return if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length < 11 || !MobileCheckUtils.isMobileNo(mobileNumber)) {
             mobileNumber
         } else mobileNumber.substring(0, 3) + "****" + mobileNumber.substring(11 - 4, mobileNumber.length)
@@ -131,7 +131,7 @@ object FormatUtils {
      * @param email zoidfkdfdsl@gmail.com to z**********@gmail.com
      * @return
      */
-    fun formatEmailStar(email: String): String? {
+    fun emailStar(email: String): String? {
         return if (TextUtils.isEmpty(email) || !CheckUtils.isEmail(email)) {
             email
         } else email.substring(0, 1) + "*******" + email.substring(email.lastIndexOf("@") - 1, email.length)
@@ -141,7 +141,7 @@ object FormatUtils {
      * @param bandCardNumber
      * @return
      */
-    fun formatBankCard(bandCardNumber: String): String? {
+    fun bankCard(bandCardNumber: String): String? {
         return if (TextUtils.isEmpty(bandCardNumber)) {
             bandCardNumber
         } else "**** **** **** " + bandCardNumber.substring(bandCardNumber.length - 4, bandCardNumber.length)
@@ -153,7 +153,7 @@ object FormatUtils {
      * @param htmlStr
      * @return
      */
-    fun formatHtmlTagToDel(htmlStr: String): String {
+    fun htmlTagToDel(htmlStr: String): String {
         var htmlStr = htmlStr
         val regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>" //定义script的正则表达式
         val regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>" //定义style的正则表达式
@@ -180,18 +180,18 @@ object FormatUtils {
      * @param bytes 字节
      * @return
      */
-    fun formatFlow(bytes: Double): String {
+    fun flow(bytes: Double): String {
         val gb = bytes / 8f / 1024f / 1024f / 1024f
         val mb = bytes / 8f / 1024f / 1024f
         val kb = bytes / 8f / 1024f
         val bit = bytes / 8
         return if (gb > 1) {//GB
-            String.format("%sGB", formatNumberWithMarkSplit(gb))
+            String.format("%sGB", numberSplit(gb))
         } else if (mb > 1) {
-            String.format("%sMB", formatNumberWithMarkSplit(mb))
+            String.format("%sMB", numberSplit(mb))
         } else if (kb > 1) {
-            String.format("%sKB", formatNumberWithMarkSplit(kb))
+            String.format("%sKB", numberSplit(kb))
         } else
-            String.format("%sByte", formatNumberWithMarkSplit(bit))
+            String.format("%sByte", numberSplit(bit))
     }
 }

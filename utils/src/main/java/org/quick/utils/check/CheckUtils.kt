@@ -89,7 +89,7 @@ object CheckUtils {
      */
     @SuppressLint("MissingPermission")
     fun isNetWorkAvailable(context: Context) = try {
-        (context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isAvailable
+        (context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isAvailable!!
     } catch (O_O: Exception) {
         false
     }

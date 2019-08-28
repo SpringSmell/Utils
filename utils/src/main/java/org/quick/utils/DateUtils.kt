@@ -1,5 +1,6 @@
 package org.quick.utils
 
+import android.annotation.SuppressLint
 import androidx.annotation.Size
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -171,6 +172,7 @@ object DateUtils {
      * 比较时间大小
      * @return 最小的时间
      */
+    @SuppressLint("Range")
     fun compareBefore(patter: String, @Size(min = 1) vararg timestamps: String): String {
         var temp = ""
         if (timestamps.isNotEmpty()) {
