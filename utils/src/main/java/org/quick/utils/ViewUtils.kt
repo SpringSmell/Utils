@@ -8,6 +8,7 @@ import android.content.res.TypedArray
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -34,7 +35,12 @@ object ViewUtils {
      * @throws Resources.NotFoundException
      */
     @Throws(Resources.NotFoundException::class)
-    fun getMipmapResId(context: Context,prefix: String, postfix: String): Int = context.applicationContext.resources.getIdentifier(prefix + postfix, "mipmap", context.applicationContext.packageName)
+    fun getMipmapResId(context: Context, prefix: String, postfix: String): Int =
+        context.applicationContext.resources.getIdentifier(
+            prefix + postfix,
+            "mipmap",
+            context.applicationContext.packageName
+        )
 
     /**
      * @param context
@@ -43,7 +49,12 @@ object ViewUtils {
      * @throws Resources.NotFoundException
      */
     @Throws(Resources.NotFoundException::class)
-    fun getDrawableResId(context: Context,prefix: String, postfix: String): Int = context.applicationContext.resources.getIdentifier(prefix + postfix, "drawable", context.applicationContext.packageName)
+    fun getDrawableResId(context: Context, prefix: String, postfix: String): Int =
+        context.applicationContext.resources.getIdentifier(
+            prefix + postfix,
+            "drawable",
+            context.applicationContext.packageName
+        )
 
     /**
      * @param context
@@ -52,7 +63,12 @@ object ViewUtils {
      * @throws Resources.NotFoundException
      */
     @Throws(Resources.NotFoundException::class)
-    fun getViewId(context: Context,prefix: String, postfix: String): Int = context.applicationContext.resources.getIdentifier(prefix + postfix, "id", context.applicationContext.packageName)
+    fun getViewId(context: Context, prefix: String, postfix: String): Int =
+        context.applicationContext.resources.getIdentifier(
+            prefix + postfix,
+            "id",
+            context.applicationContext.packageName
+        )
 
     /**
      * @param context
@@ -60,7 +76,7 @@ object ViewUtils {
      * @param postfix   资源名称后缀
      */
     fun setImageViewForDrawable(imageView: ImageView, prefix: String, postfix: String) {
-        imageView.setImageResource(getDrawableResId(imageView.context,prefix, postfix))
+        imageView.setImageResource(getDrawableResId(imageView.context, prefix, postfix))
     }
 
     /**
@@ -71,7 +87,7 @@ object ViewUtils {
      * @param postfix   资源名称的后缀
      */
     fun setImageViewForMipmap(imageView: ImageView, prefix: String, postfix: String) {
-        imageView.setImageResource(getMipmapResId(imageView.context,prefix, postfix))
+        imageView.setImageResource(getMipmapResId(imageView.context, prefix, postfix))
     }
 
     /**
@@ -114,10 +130,12 @@ object ViewUtils {
                 is Int -> value = intent.getIntExtra(key, 0)
                 is Boolean -> value = intent.getBooleanExtra(key, false)
                 is Serializable -> value = intent.getSerializableExtra(key)
+                is Parcelable -> value = intent.getParcelableExtra(key)
                 is Long -> value = intent.getLongExtra(key, 0)
                 is Float -> value = intent.getFloatExtra(key, 0f)
                 is Double -> value = intent.getDoubleExtra(key, 0.0)
                 is ArrayList<*> -> value = intent.getStringArrayListExtra(key)
+                is Array<*> -> intent.getStringArrayExtra(key)
                 is Bundle -> value = intent.getBundleExtra(key)
             }
         } catch (o_O: Exception) {
@@ -146,7 +164,7 @@ object ViewUtils {
     /**
      * 获得字体高度
      */
-    fun getFontHeight(paint: Paint,str:String="正"): Int {
+    fun getFontHeight(paint: Paint, str: String = "正"): Int {
         val rect = Rect()
         paint.getTextBounds(str, 0, 1, rect)
         return rect.height()
@@ -165,11 +183,24 @@ object ViewUtils {
     }
 
     fun setupFitsSystemWindows(activity: Activity, view: View) {
-        view.setPadding(view.paddingLeft, DevicesUtils.getStatusHeight(activity) + view.paddingTop, view.paddingRight, view.paddingBottom)
+        view.setPadding(
+            view.paddingLeft,
+            DevicesUtils.getStatusHeight(activity) + view.paddingTop,
+            view.paddingRight,
+            view.paddingBottom
+        )
     }
 
     fun setupFitsSystemWindowsFromToolbar(activity: Activity, view: View) {
-        view.layoutParams.height = (getSystemAttrValue(activity, android.R.attr.actionBarSize) + DevicesUtils.getStatusHeight(activity)).toInt()
-        view.setPadding(view.paddingLeft, DevicesUtils.getStatusHeight(activity) + view.paddingTop, view.paddingRight, view.paddingBottom)
+        view.layoutParams.height = (getSystemAttrValue(
+            activity,
+            android.R.attr.actionBarSize
+        ) + DevicesUtils.getStatusHeight(activity)).toInt()
+        view.setPadding(
+            view.paddingLeft,
+            DevicesUtils.getStatusHeight(activity) + view.paddingTop,
+            view.paddingRight,
+            view.paddingBottom
+        )
     }
 }
