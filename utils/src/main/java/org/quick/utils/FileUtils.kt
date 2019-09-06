@@ -1,5 +1,7 @@
 package org.quick.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Environment
 import java.io.File
@@ -21,7 +23,8 @@ object FileUtils {
     /**
      * 当前应用数据库存放路径
      */
-    fun currentAppDBPath(context: Context,dbName: String) = context.applicationContext.getDatabasePath(dbName).absolutePath
+    fun currentAppDBPath(context: Context, dbName: String) =
+        context.applicationContext.getDatabasePath(dbName).absolutePath
 
     /**
      * 当前应用路径
@@ -117,5 +120,30 @@ object FileUtils {
         os.close()
         ins.close()
         return file
+    }
+
+    fun copyTxt(context: Context, content: String) {
+        copyTxt(context, "CopyName", content)
+    }
+
+    fun copyTxt(context: Context, key: String, content: String) {
+        val clipData = ClipData.newPlainText(key, content)
+        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip =
+            clipData
+    }
+
+    fun parseTxt(context: Context): String {
+        val clipboardManager =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        if (!clipboardManager.hasPrimaryClip()) {
+            return ""
+        }
+        val clipData = clipboardManager.primaryClip
+        //获取 ClipDescription
+        val clipDescription = clipboardManager.primaryClipDescription
+        //获取 lable
+        val lable = clipDescription!!.label.toString()
+        //获取 text
+        return clipData!!.getItemAt(0).text.toString()
     }
 }
