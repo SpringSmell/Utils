@@ -7,6 +7,9 @@
       <module fileurl="file://$PROJECT_DIR$/app/Utils-app.iml" filepath="$PROJECT_DIR$/app/Utils-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/Utils-utils.iml" filepath="$PROJECT_DIR$/utils/Utils-utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-Utils-QuickUtils.iml" filepath="$PROJECT_DIR$/project-Utils-QuickUtils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/project-Utils-app.iml" filepath="$PROJECT_DIR$/app/project-Utils-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/utils/project-Utils-utils.iml" filepath="$PROJECT_DIR$/utils/project-Utils-utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
     </modules>
   </component>

@@ -44,8 +44,8 @@ object DateUtils {
      * @param timestamp
      * @return
      */
-    private fun getTimestampLength(timestamp: Long): Long {
-        val dateLength = timestamp + "".length
+    fun getTimestampLength(timestamp: Long): Long {
+        val dateLength = timestamp.toString().length
         var result: Long = 1
         for (i in 0 until 13 - dateLength) {
             result *= 10
@@ -55,7 +55,8 @@ object DateUtils {
 
     fun toStr(timestamp: Long): String = toStr(timestamp, YMDHMS)
 
-    fun toStr(timestamp: Long, patter: String): String = getDateFormat(patter).format(timestamp * getTimestampLength(timestamp))
+    fun toStr(timestamp: Long, patter: String): String =
+        getDateFormat(patter).format(timestamp * getTimestampLength(timestamp))
 
     fun toStr(date: Date): String = toStr(date, YMDHMS)
 
@@ -115,7 +116,8 @@ object DateUtils {
      * @param timestamp1
      * @param timestamp2
      */
-    fun before(timestamp1: String, timestamp2: String, patter: String): Boolean = toDate(timestamp1, patter).before(toDate(timestamp2, patter))
+    fun before(timestamp1: String, timestamp2: String, patter: String): Boolean =
+        toDate(timestamp1, patter).before(toDate(timestamp2, patter))
 
     /**
      * timestamp1 在 timestamp2 之前
@@ -140,7 +142,8 @@ object DateUtils {
      * @param timestamp1
      * @param timestamp2
      */
-    fun after(timestamp1: String, timestamp2: String, patter: String): Boolean = toDate(timestamp1, patter).after(toDate(timestamp2, patter))
+    fun after(timestamp1: String, timestamp2: String, patter: String): Boolean =
+        toDate(timestamp1, patter).after(toDate(timestamp2, patter))
 
     /**
      * timestamp1 在 timestamp2 之后
@@ -160,9 +163,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { temp > timestamps[it] }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { temp > timestamps[it] }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -178,9 +181,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -194,9 +197,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { temp.after(timestamps[it]) }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { temp.after(timestamps[it]) }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -210,9 +213,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { temp < timestamps[it] }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { temp < timestamps[it] }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -226,9 +229,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { toDate(timestamps[it], patter).before(toDate(timestamps[it], patter)) }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -242,9 +245,9 @@ object DateUtils {
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
             (1 until timestamps.size - 1)
-                    .asSequence()
-                    .filter { temp.before(timestamps[it]) }
-                    .forEach { temp = timestamps[it] }
+                .asSequence()
+                .filter { temp.before(timestamps[it]) }
+                .forEach { temp = timestamps[it] }
         }
         return temp
     }
@@ -262,18 +265,35 @@ object DateUtils {
         return if (timestamp > 0) {
             val day = timestamp / DateUtils.DAY
             val hours = (timestamp - DateUtils.DAY * day) / DateUtils.HOURS
-            val minute = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours) / DateUtils.MINUTE
-            val second = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours - DateUtils.MINUTE * minute) / DateUtils.SECOND
-            val millisecond = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours - DateUtils.MINUTE * minute - DateUtils.SECOND * second) / DateUtils.MILLISECOND
+            val minute =
+                (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours) / DateUtils.MINUTE
+            val second =
+                (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours - DateUtils.MINUTE * minute) / DateUtils.SECOND
+            val millisecond =
+                (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hours - DateUtils.MINUTE * minute - DateUtils.SECOND * second) / DateUtils.MILLISECOND
             val tempDay = if (day in 0..9) "0$day" else day.toString()
             val tempHours = if (hours in 0..9) "0$hours" else hours.toString()
             val tempMinute = if (minute in 0..9) "0$minute" else minute.toString()
             val tempSecond = if (second in 0..9) "0$second" else second.toString()
-            val tempMillisecond = if (millisecond in 0..9) "00$millisecond" else if (millisecond in 10..99) "0$millisecond" else millisecond.toString()
+            val tempMillisecond =
+                if (millisecond in 0..9) "00$millisecond" else if (millisecond in 10..99) "0$millisecond" else millisecond.toString()
 
             return when {
-                day > 0 -> String.format("%s %s:%s:%s,%s", tempDay, tempHours, tempMinute, tempSecond, tempMillisecond)
-                hours > 0 -> String.format("%s:%s:%s,%s", tempHours, tempMinute, tempSecond, tempMillisecond)
+                day > 0 -> String.format(
+                    "%s %s:%s:%s,%s",
+                    tempDay,
+                    tempHours,
+                    tempMinute,
+                    tempSecond,
+                    tempMillisecond
+                )
+                hours > 0 -> String.format(
+                    "%s:%s:%s,%s",
+                    tempHours,
+                    tempMinute,
+                    tempSecond,
+                    tempMillisecond
+                )
                 else -> String.format("%s:%s,%s", tempMinute, tempSecond, tempMillisecond)
             }
         } else "00:00,00"
@@ -291,7 +311,8 @@ object DateUtils {
         val day = timestamp / DateUtils.DAY
         val hour = (timestamp - DateUtils.DAY * day) / DateUtils.HOURS
         val minute = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hour) / DateUtils.MINUTE
-        val second = (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hour - DateUtils.MINUTE * minute) / DateUtils.SECOND
+        val second =
+            (timestamp - DateUtils.DAY * day - DateUtils.HOURS * hour - DateUtils.MINUTE * minute) / DateUtils.SECOND
 
         return when {
             day > 0 -> String.format("$prefix%s天%s时%s分%s秒$postfix", day, hour, minute, second)
@@ -330,14 +351,16 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeDayToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeDayToDate(date, dayCount))
+    fun beforeDayToStr(date: Date, dayCount: Int): String =
+        DateUtils.toStr(beforeDayToDate(date, dayCount))
 
     /**
      * 多少天后
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeDayToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeDayToDate(date, dayCount))
+    fun beforeDayToLong(date: Date, dayCount: Int) =
+        DateUtils.toLong(beforeDayToDate(date, dayCount))
 
     /**
      * 多少天后-当时系统时间
@@ -378,14 +401,16 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeMonthToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeMonthToDate(date, dayCount))
+    fun beforeMonthToStr(date: Date, dayCount: Int): String =
+        DateUtils.toStr(beforeMonthToDate(date, dayCount))
 
     /**
      * 多少月后
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeMonthToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeMonthToDate(date, dayCount))
+    fun beforeMonthToLong(date: Date, dayCount: Int) =
+        DateUtils.toLong(beforeMonthToDate(date, dayCount))
 
     /**
      * 多少月后-当时系统时间
@@ -426,14 +451,16 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeYearToStr(date: Date, dayCount: Int): String = DateUtils.toStr(beforeYearToDate(date, dayCount))
+    fun beforeYearToStr(date: Date, dayCount: Int): String =
+        DateUtils.toStr(beforeYearToDate(date, dayCount))
 
     /**
      * 多少年后
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeYearToLong(date: Date, dayCount: Int) = DateUtils.toLong(beforeYearToDate(date, dayCount))
+    fun beforeYearToLong(date: Date, dayCount: Int) =
+        DateUtils.toLong(beforeYearToDate(date, dayCount))
 
     /**
      * 多少年后-当时系统时间

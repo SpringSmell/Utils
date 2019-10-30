@@ -39,15 +39,20 @@ object ImageUtils {
      * @source http://www.android-doc.com/training/displaying-bitmaps/load-bitmap
      * .html#read-bitmap
      */
-    fun decodeSampledBitmapFromResource(res: Resources, resId: Int, reqWidth: Int, reqHeight: Int): Bitmap {
+    fun decodeSampledBitmapFromResource(
+        res: Resources,
+        resId: Int,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Bitmap {
 
         if (reqWidth == 0 || reqHeight == 0) {
             return BitmapFactory.decodeResource(res, resId)
-                    ?: drawableToBitmap(
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                res.getDrawable(resId, null)
-                            else res.getDrawable(resId)
-                    )
+                ?: drawableToBitmap(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        res.getDrawable(resId, null)
+                    else res.getDrawable(resId)
+                )
         }
 
         // First decode with inJustDecodeBounds=true to check dimensions
@@ -107,7 +112,10 @@ object ImageUtils {
 
         if (height > reqHeight || width > reqWidth) {
             // 取高宽中更大一边，进行同比例缩放，这样才不会变形。
-            inSampleSize = if (width > height) Math.round(height.toFloat() / reqHeight.toFloat()) else Math.round(width.toFloat() / reqWidth.toFloat())
+            inSampleSize =
+                if (width > height) Math.round(height.toFloat() / reqHeight.toFloat()) else Math.round(
+                    width.toFloat() / reqWidth.toFloat()
+                )
         }
         return inSampleSize
     }
@@ -118,7 +126,8 @@ object ImageUtils {
         val h = drawable.intrinsicHeight
 
         // 取 drawable 的颜色格式
-        val config = if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+        val config =
+            if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
         // 建立对应 bitmap
         val bitmap = Bitmap.createBitmap(w, h, config)
         // 建立对应 bitmap 的画布
@@ -153,7 +162,11 @@ object ImageUtils {
     fun screenshot(activity: Activity?): Bitmap? {
         if (activity == null) return null
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val bitmap = Bitmap.createBitmap(activity.window.decorView.measuredWidth, activity.window.decorView.measuredHeight, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(
+                activity.window.decorView.measuredWidth,
+                activity.window.decorView.measuredHeight,
+                Bitmap.Config.ARGB_8888
+            )
 //            PixelCopy.request(activity.window, bitmap, {
 //
 //            }, QuickAsync.mainHandler)
@@ -171,15 +184,15 @@ object ImageUtils {
     /**
      * 屏幕截图
      */
-    fun screenshot(view: View?): Bitmap? {
-        if (view == null) return null
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            PixelCopy.request(view, bitmap, {
-//
-//            }, QuickAsync.mainHandler)
-        } else view.draw(Canvas(bitmap))
-        return bitmap
+    fun screenshot(v: View?): Bitmap? {
+        return if (v == null) {
+            null
+        } else {
+            val bitmap =
+                Bitmap.createBitmap(v.measuredWidth, v.measuredHeight, Bitmap.Config.ARGB_8888)
+            v.draw(Canvas(bitmap))
+            bitmap
+        }
     }
 
     /**
@@ -204,7 +217,14 @@ object ImageUtils {
             bitmapCorp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmapCorp)
             canvas.drawARGB(0, 0, 0, 0)
-            canvas.drawRoundRect(RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat()), radius, radius, paint)
+            canvas.drawRoundRect(
+                RectF(
+                    left.toFloat(),
+                    top.toFloat(),
+                    right.toFloat(),
+                    bottom.toFloat()
+                ), radius, radius, paint
+            )
             paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
             canvas.drawBitmap(bitmap, src, dst, paint)
             bitmapCorp
@@ -291,7 +311,6 @@ object ImageUtils {
         var bitmap: Bitmap? = null
         for (i in 0 until scrollView.childCount) {
             h += scrollView.getChildAt(i).height
-            scrollView.getChildAt(i).setBackgroundColor(Color.parseColor("#ffffff"))
         }
         bitmap = Bitmap.createBitmap(scrollView.width, h, Bitmap.Config.RGB_565)
         val canvas = Canvas(bitmap!!)
@@ -462,7 +481,8 @@ object ImageUtils {
             val c = Canvas(bmpGray)
             c.drawARGB(0, 0, 0, 0) // 填充整个Canvas
             c.drawCircle(roundPx, roundPx, roundPx, paint)
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)// 设置两张图片相交时的模式,参考http://trylovecatch.iteye.com/blog/1189452
+            paint.xfermode =
+                PorterDuffXfermode(PorterDuff.Mode.SRC_IN)// 设置两张图片相交时的模式,参考http://trylovecatch.iteye.com/blog/1189452
             c.drawBitmap(bitmap, src, dst, paint)
         } else {
             bmpGray = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)

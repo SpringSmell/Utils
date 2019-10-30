@@ -128,8 +128,8 @@ object FileUtils {
 
     fun copyTxt(context: Context, key: String, content: String) {
         val clipData = ClipData.newPlainText(key, content)
-        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip =
-            clipData
+        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).
+            primaryClip = clipData
     }
 
     fun parseTxt(context: Context): String {
@@ -144,6 +144,6 @@ object FileUtils {
         //获取 lable
         val lable = clipDescription!!.label.toString()
         //获取 text
-        return clipData!!.getItemAt(0).text.toString()
+        return ""+clipData!!.getItemAt(0).text
     }
 }
