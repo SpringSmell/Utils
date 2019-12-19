@@ -53,14 +53,10 @@ object DateUtils {
         return result
     }
 
-    fun toStr(timestamp: Long): String = toStr(timestamp, YMDHMS)
-
-    fun toStr(timestamp: Long, patter: String): String =
+    fun toStr(timestamp: Long, patter: String = YMDHMS): String =
         getDateFormat(patter).format(timestamp * getTimestampLength(timestamp))
 
-    fun toStr(date: Date): String = toStr(date, YMDHMS)
-
-    fun toStr(date: Date, patter: String): String = getDateFormat(patter).format(date)
+    fun toStr(date: Date, patter: String = YMDHMS): String = getDateFormat(patter).format(date)
 
     /**
      * 默认为24小时制
@@ -68,17 +64,13 @@ object DateUtils {
      * @param l
      * @return
      */
-    fun toDate(l: Long): Date = toDate(l, YMDHMS)
-
-    fun toDate(l: Long, patter: String): Date = try {
+    fun toDate(l: Long, patter: String = YMDHMS): Date = try {
         getDateFormat(patter).parse(toStr(l, patter))
     } catch (e: ParseException) {
         Date()
     }
 
-    fun toDate(dateStr: String): Date = toDate(dateStr, YMDHMS)
-
-    fun toDate(dateStr: String, patter: String): Date = try {
+    fun toDate(dateStr: String, patter: String = YMDHMS): Date = try {
         getDateFormat(patter).parse(dateStr)
     } catch (e: ParseException) {
         Date()
@@ -92,9 +84,7 @@ object DateUtils {
      */
     fun toLong(date: Date): Long = date.time
 
-    fun toLong(dateStr: String): Long = toLong(dateStr, YMDHMS)
-
-    fun toLong(dateStr: String, patter: String): Long = try {
+    fun toLong(dateStr: String, patter: String = YMDHMS): Long = try {
         getDateFormat(patter).parse(dateStr).time
     } catch (e: ParseException) {
         timeInMillis()
@@ -224,7 +214,7 @@ object DateUtils {
      * 比较时间大小
      * @return 最大的时间
      */
-    fun compareAfter(patter: String, vararg timestamps: String): String {
+    fun compareAfter(patter: String = YMDHMS, vararg timestamps: String): String {
         var temp = ""
         if (timestamps.isNotEmpty()) {
             temp = timestamps[0]
@@ -351,8 +341,8 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeDayToStr(date: Date, dayCount: Int): String =
-        DateUtils.toStr(beforeDayToDate(date, dayCount))
+    fun beforeDayToStr(date: Date, dayCount: Int, patter: String = YMDHMS): String =
+        DateUtils.toStr(beforeDayToDate(date, dayCount), patter)
 
     /**
      * 多少天后
@@ -376,7 +366,8 @@ object DateUtils {
      * 多少天后
      * @param dayCount 天数
      */
-    fun beforeDayToStr(dayCount: Int) = DateUtils.toStr(beforeDayToDate(dayCount))
+    fun beforeDayToStr(dayCount: Int, patter: String = YMDHMS) =
+        DateUtils.toStr(beforeDayToDate(dayCount), patter)
 
     /**
      * 多少天后
@@ -401,8 +392,8 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeMonthToStr(date: Date, dayCount: Int): String =
-        DateUtils.toStr(beforeMonthToDate(date, dayCount))
+    fun beforeMonthToStr(date: Date, dayCount: Int, patter: String = YMDHMS): String =
+        DateUtils.toStr(beforeMonthToDate(date, dayCount), patter)
 
     /**
      * 多少月后
@@ -426,7 +417,8 @@ object DateUtils {
      * 多少月后
      * @param dayCount 天数
      */
-    fun beforeMonthToStr(dayCount: Int) = DateUtils.toStr(beforeMonthToDate(dayCount))
+    fun beforeMonthToStr(dayCount: Int, patter: String = YMDHMS) =
+        DateUtils.toStr(beforeMonthToDate(dayCount), patter)
 
     /**
      * 多少月后
@@ -451,8 +443,8 @@ object DateUtils {
      * @param date 在这个时间基础上
      * @param dayCount 天数
      */
-    fun beforeYearToStr(date: Date, dayCount: Int): String =
-        DateUtils.toStr(beforeYearToDate(date, dayCount))
+    fun beforeYearToStr(date: Date, dayCount: Int, patter: String = YMDHMS): String =
+        DateUtils.toStr(beforeYearToDate(date, dayCount), patter)
 
     /**
      * 多少年后
@@ -476,7 +468,8 @@ object DateUtils {
      * 多少年后
      * @param dayCount 天数
      */
-    fun beforeYearToStr(dayCount: Int) = DateUtils.toStr(beforeYearToDate(dayCount))
+    fun beforeYearToStr(dayCount: Int, patter: String = YMDHMS) =
+        DateUtils.toStr(beforeYearToDate(dayCount), patter)
 
 
     fun timeInMillis() = getCalendar().timeInMillis
