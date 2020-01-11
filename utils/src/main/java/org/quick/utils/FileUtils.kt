@@ -138,12 +138,16 @@ object FileUtils {
         if (!clipboardManager.hasPrimaryClip()) {
             return ""
         }
-        val clipData = clipboardManager.primaryClip
+//        val clipData = clipboardManager.primaryClip
         //获取 ClipDescription
-        val clipDescription = clipboardManager.primaryClipDescription
-        //获取 lable
-        val lable = "" + clipDescription!!.label
+//        val clipDescription = clipboardManager.primaryClipDescription
+//        //获取 lable
+//        val lable = "" + clipDescription!!.label
         //获取 text
-        return "" + clipData!!.getItemAt(0).text
+        return try {
+            clipboardManager.primaryClip.getItemAt(0).text.toString()
+        } catch (O_O: Throwable) {
+            ""
+        }
     }
 }

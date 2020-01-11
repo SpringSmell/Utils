@@ -149,21 +149,24 @@ object DevicesUtils {
         return statusHeight
     }
 
-    fun installAPK(context: Context,apkFile: File): Boolean = if (apkFile.exists()) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            val contentUri = FileProvider.getUriForFile(context.applicationContext, context.applicationContext.applicationInfo.processName + ".install.fileProvider", apkFile)
-            intent.setDataAndType(contentUri, "application/vnd.android.package-archive")
-        } else {
-            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        if (context.applicationContext.packageManager.queryIntentActivities(intent, 0).size > 0) {
-            context.applicationContext.startActivity(intent)
-        }
-        true
-    } else false
+    fun installAPK(context: Context,apkFile: File,provider:String=".installFileProvider"): Boolean =
+        if (apkFile.exists()) {
+            val intent = Intent(Intent.ACTION_VIEW)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+                val contentUri = FileProvider.getUriForFile(context.applicationContext, context.applicationContext.applicationInfo.processName + provider, apkFile)
+                intent.setDataAndType(contentUri, "application/vnd.android.package-archive")
+            } else {
+                intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive")
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            if (context.applicationContext.packageManager.queryIntentActivities(intent, 0).size > 0) {
+                context.applicationContext.startActivity(intent)
+            }
+            true
+    } else
+            false
 
     /**
      * 获取SHA1码
